@@ -1,0 +1,11 @@
+.App {
+    min-height: 100vh;
+    width: 100vw;
+    background: $tertiary;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    font-family: 'Roboto', sans-serif;
+    color: $primary;
+}

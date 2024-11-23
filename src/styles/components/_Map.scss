@@ -1,0 +1,46 @@
+.zoom-on-hover {
+  transition: all 0.3s ease;
+  /* Animation fluide */
+  /* Centrer le zoom */
+  position: relative;
+  fill: #001d63;
+}
+
+.zoom-on-hover:hover {
+  fill: #efc92f;
+  position: relative;
+}
+
+.map {
+  position: relative;
+  max-width: 80%;
+
+  svg {
+    max-width: 100%;
+    height: auto;
+  }
+
+  &__tooltip {
+    position: absolute;
+    background-color: #333;
+    color: #fff;
+    padding: 5px;
+    border-radius: 5px;
+    font-size: 12px;
+    transform: translate(-50%, -100%);
+    z-index: 9999;
+    max-width: 200px;
+  }
+
+  &__toolmenu {
+    position: absolute;
+    background-color: #333;
+    color: #fff;
+    padding: 5px;
+    border-radius: 5px;
+    font-size: 12px;
+    transform: translate(-50%, -100%);
+    z-index: 9999;
+    max-width: 200px;
+  }
+}
