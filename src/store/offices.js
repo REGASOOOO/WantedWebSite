@@ -16,6 +16,7 @@ const generateDefaultStates = () => {
         })
 
     })
+    console.log(obj)
     return obj;
 }
 
@@ -58,6 +59,10 @@ const useOfficesStore = create((set, get) => ({
             return updatedState;
 
         });
+    },
+    getOfficeStates: (stateName) => {
+
+        return get().states[stateName] || {};
     },
 }));
 

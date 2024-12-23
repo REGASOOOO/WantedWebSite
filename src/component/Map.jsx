@@ -11,10 +11,12 @@ export default function Map() {
 
     const [showState, setShowState] = useState(false);
     const states = useOfficesStore((state) => state.states);
-    const { setSelectedState, selectedState, setStateOfficesResultsn, updateStateData } = useOfficesStore();
+    const { setSelectedState, selectedState, setStateOfficesResultsn, updateStateData, getOfficeStates } = useOfficesStore();
+    const [onClickState, setOnClickState] = useState();
     const [open, setOpen] = useState(false);
     const mapRef = useRef(null);
     const tooltipRef = useRef(null);
+    const [modalTitle, setModalTitle] = useState("");
 
     function getState(event) {
         const element = event.target;
@@ -50,34 +52,34 @@ export default function Map() {
         const resultsPerPage = 20;
         const state = getState(event)
         var totals = 0
-        setSelectedState(state)
-
+        setOnClickState(state)
+        setModalTitle(state.state)
         console.log('Fetch data for state:', state.state);
+        if (getOfficeStates(state.state).total === 0) {
+            for (const office of state.offices) {
+                console.log(`Fetch data for office: ${office} ${state.offices.indexOf(office) + 1}/${state.offices.length}`);
+                const formattedOffice = OfficeService.formatOfficeName(office)
+                const response = await api.get(`/list?field_offices=${formattedOffice}`);
+                const { total, items } = response.data;
+                totals = totals + total
+                const criminals = [...items];
 
-        for (const office of state.offices) {
-            console.log(`Fetch data for office: ${office} ${state.offices.indexOf(office) + 1}/${state.offices.length}`);
-            const formattedOffice = OfficeService.formatOfficeName(office)
-            const response = await api.get(`/list?field_offices=${formattedOffice}`);
-            const { total, items } = response.data;
-            totals = totals + total
-            const criminals = [...items];
+                if (total > resultsPerPage) {
+                    const pages = Math.ceil(total / resultsPerPage);
 
-            if (total > resultsPerPage) {
-                const pages = Math.ceil(total / resultsPerPage);
-
-                for (let page = 2; page <= pages; page++) {
-                    const response = await api.get(`/list?field_offices=${formattedOffice}&page=${page}`);
-                    criminals.push(...response.data.items);
+                    for (let page = 2; page <= pages; page++) {
+                        const response = await api.get(`/list?field_offices=${formattedOffice}&page=${page}`);
+                        criminals.push(...response.data.items);
+                    }
                 }
+                updateStateData(state.state, formattedOffice, totals, { total: total, data: criminals });
+
+                console.log(`Fetched ${criminals.length} criminals for office: ${office}`);
+
             }
-            updateStateData(state.state, formattedOffice, totals, { total: totals, data: criminals });
-
-            console.log(`Fetched ${criminals.length} criminals for office: ${office}`);
-
+            totals = 0 //reset totals
         }
-        totals = 0 //reset totals
         setOpen(true);
-        console.log(states)
     };
 
     useEffect(() => {
@@ -115,8 +117,9 @@ export default function Map() {
 
                 <Modal
                     open={open}
-                    title="Nombre de personne recherché"
+                    title={modalTitle}
                     centered
+                    width={400}
                     onOk={handleOk}
                     onCancel={handleCancel}
                     footer={[
@@ -125,12 +128,13 @@ export default function Map() {
                         </Button>,
                     ]}
                 >
-                    {selectedState ? (
+                    {onClickState ? (
                         <>
-                            État : <br />
-                            {selectedState.state} : {states[selectedState.state]?.total || 0} <br />
-                            Par bureau du FBI :
-                            {selectedState.offices.map((element, index) => (<div key={index}>{element} : {states[selectedState.state]?.[OfficeService.formatOfficeName(element)]?.total} <br /></div>))}
+                            {onClickState.state} Wanted : {states[onClickState.state]?.total || 0} <br /><br />
+
+                            Bureau du FBI:
+                            <br />
+                            {onClickState.offices.map((element, index) => (<div key={index}>{element} Wanted : {states[onClickState.state]?.[OfficeService.formatOfficeName(element)]?.total} <br /></div>))}
                         </>
                     ) : (
                         "Chargement des données..."
