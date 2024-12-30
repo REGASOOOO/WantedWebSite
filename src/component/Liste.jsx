@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { Carousel, Card } from 'antd';
 import useOfficesStore from '../store/offices';
 import { useParams } from 'react-router-dom';
@@ -14,32 +13,34 @@ export default function Liste() {
 
     return (
         <>
-            <p>Les criminels recherchés dans l'état de : {statesName}</p>
+            <h1>Les criminels recherchés dans l'état de : {statesName}</h1>
 
-            <Carousel arrows infinite={false}>
+            <Carousel arrows infinite={false} style={{ width: '70%' }}>
                 {state &&
                     Object.keys(state).map((cityKey) => {
                         const city = state[cityKey];
                         if (typeof city === "object" && city !== null && "data" in city) {
-                            return city.data.map((item, index) => (
+                            return city.data.map((item) => (
                                 <Card
-                                    key={index} // Ajout d'une clé unique
+                                    key={item.uid}
                                     hoverable
+                                    
+                                    style={{width: '20%' , margin: '0 auto' }}
                                     cover={
                                         <img
                                             alt="criminal"
-                                            src={item.images[0]?.original || "https://via.placeholder.com/150"} // Image par défaut
+                                            src={item.images[0]?.large || "https://bibliojeu.net/images/edition/inconnu.png"}
                                         />
                                     }
                                 >
                                     <Meta
-                                        title={item.aliases || "Inconnu"} // Nom du criminel ou "Inconnu"
-                                        description={item.description || "Pas de description"} // Description
+                                        title={item.aliases || "Inconnu"}
+                                        description={item.description || "Pas de description"}
                                     />
                                 </Card>
                             ));
                         }
-                        return null; // Retourne null si aucune donnée valide
+                        return null;
                     })}
             </Carousel>
             <br />
