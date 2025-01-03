@@ -15,3 +15,21 @@
         display: block;
     }
 }
+
+.ant-breadcrumb {
+    display: flex;
+    align-items: center;
+
+    span {
+        color: $secondary;
+    }
+
+    .ant-breadcrumb-separator {
+        color: $secondary;
+    }
+
+}
+
+header {
+    display: flex;
+}

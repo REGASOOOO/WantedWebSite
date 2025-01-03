@@ -6,11 +6,13 @@ import { api } from "../services/api.service";
 import OfficeService from '../services/office.service';
 import { Button, Modal } from "antd";
 import { useNavigate } from 'react-router-dom';
+import { useBreadcrumb } from './BreadCrumb';
 
 
 
 export default function Map() {
 
+    const { setBreadcrumbItems } = useBreadcrumb();
     const [showState, setShowState] = useState(false);
     const states = useOfficesStore((state) => state.states);
     const { setSelectedState, selectedState, updateStateData, getOfficeStates } = useOfficesStore();
@@ -45,7 +47,7 @@ export default function Map() {
 
     const handleOk = (state) => {
         setOpen(false);
-        navigate('/liste/' + state)
+        navigate('/' + state)
     };
 
     const handleCancel = () => {
@@ -87,6 +89,7 @@ export default function Map() {
     };
 
     useEffect(() => {
+        setBreadcrumbItems([{ title: 'Map' }]);
         const paths = document.querySelectorAll("path");
         const map = document.getElementById("map");
 
@@ -103,7 +106,7 @@ export default function Map() {
             });
             map.removeEventListener("mouseleave", handleMouseLeave)
         };
-    }, []);
+    }, [setBreadcrumbItems]);
 
     return (
         <>

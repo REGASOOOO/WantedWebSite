@@ -1,16 +1,38 @@
-import { useState } from 'react';
-import { Carousel, Card } from 'antd';
+import { useState, useEffect } from 'react';
+import { Carousel, Card, Button, Modal, QRCode } from 'antd';
 import useOfficesStore from '../store/offices';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
+import { useBreadcrumb } from './BreadCrumb';
 
 const { Meta } = Card; // Importation de Meta depuis Card
 
 export default function Liste() {
     const { statesName } = useParams();
     const { getOfficeStates } = useOfficesStore();
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [linkPdf, setLinkPdf] = useState('');
+    const navigate = useNavigate();
+    const { setBreadcrumbItems } = useBreadcrumb();
 
-    // Récupération des données directement dans le rendu
-    const state = getOfficeStates(statesName) || {}; // Garantit que 'state' est défini si non trouvé
+
+    useEffect(() => {
+        setBreadcrumbItems([{ title: 'Map' }, { title: statesName }]);
+    }, [setBreadcrumbItems, statesName]);
+
+
+    const handleView = (uid) => navigate('/' + statesName + '/' + uid);
+
+    const handleQr = (url) => {
+        console.log(url);
+        setIsModalOpen(true);
+        setLinkPdf(url);
+    }
+
+
+    const handleOk = () => setIsModalOpen(false);
+
+
+    const state = getOfficeStates(statesName) || {};
 
     return (
         <>
@@ -32,17 +54,21 @@ export default function Liste() {
                                                     style={{ maxWidth: '100%', maxHeight: '200px', objectFit: 'contain' }}
                                                 />
                                             }
-
                                         >
-                                            <Action>
-
-                                            </Action>
                                             <Meta
                                                 title={item.aliases && Array.isArray(item.aliases)
                                                     ? item.aliases.join(", ")
                                                     : "Aucun alias disponible."}
                                                 description={item.description || "Aucune description disponible"}
                                             />
+                                            <div className='action-button'>
+                                                <Button type="primary" onClick={() => handleView(item.uid)}>
+                                                    View More
+                                                </Button>
+                                                <Button type="primary" onClick={() => handleQr(item.files[0].url)}>
+                                                    Qrcode
+                                                </Button>
+                                            </div>
                                         </Card>
                                     </div>
                                 </div>
@@ -52,6 +78,13 @@ export default function Liste() {
                     })}
             </Carousel>
             <br />
+            <Modal title="Scan the QRcode" open={isModalOpen} onCancel={handleOk} onOk={handleOk}>
+                {isModalOpen ? (
+                    <QRCode value={linkPdf} />
+                ) : (
+                    "Loading data"
+                )}
+            </Modal>
         </>
     );
 }

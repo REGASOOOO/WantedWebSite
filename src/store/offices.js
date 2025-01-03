@@ -64,6 +64,21 @@ const useOfficesStore = create((set, get) => ({
 
         return get().states[stateName] || {};
     },
+
+    getCriminals: (stateName, uid) => {
+
+        const states = get().states[stateName];
+
+        for (const officeName in states) {
+            if (states[officeName]?.data) {
+                const foundUser = states[officeName].data.find(user => user.uid === uid);
+                if (foundUser) {
+                    console.log(`Utilisateur trouvé dans ${officeName}:`, foundUser);
+                    return foundUser;
+                }
+            }
+        }
+    }
 }));
 
 export default useOfficesStore;
