@@ -5,4 +5,13 @@
     gap: 1rem;
     font-family: 'Roboto', sans-serif;
     color: $primary;
+
+    &.flex-layout {
+        display: flex;
+        justify-content: center;
+    }
+
+    &.App default-layout {
+        display: block;
+    }
 }

@@ -16,27 +16,33 @@ export default function Liste() {
         <>
             <p>Les criminels recherchés dans l'état de : {statesName}</p>
 
-            <Carousel arrows infinite={false}>
+            <Carousel className="custom-carousel" arrows infinite={false}>
                 {state &&
                     Object.keys(state).map((cityKey) => {
                         const city = state[cityKey];
                         if (typeof city === "object" && city !== null && "data" in city) {
                             return city.data.map((item, index) => (
-                                <Card
-                                    key={index} // Ajout d'une clé unique
-                                    hoverable
-                                    cover={
-                                        <img
-                                            alt="criminal"
-                                            src={item.images[0]?.original || "https://via.placeholder.com/150"} // Image par défaut
-                                        />
-                                    }
-                                >
-                                    <Meta
-                                        title={item.aliases || "Inconnu"} // Nom du criminel ou "Inconnu"
-                                        description={item.description || "Pas de description"} // Description
-                                    />
-                                </Card>
+                                <div key={index} className="custom-carousel-item">
+                                    <div className="custom-card">
+                                        <Card
+                                            cover={
+                                                <img
+                                                    alt={item.uid || "Inconnu"}
+                                                    src={item.images[0].original || ""}
+                                                    style={{ maxWidth: '100%', maxHeight: '200px', objectFit: 'contain' }}
+                                                />
+                                            }
+
+                                        >
+                                            <Meta
+                                                title={item.aliases && Array.isArray(item.aliases)
+                                                    ? item.aliases.join(", ")
+                                                    : "Aucun alias disponible."}
+                                                description={item.description || "Aucune description disponible"}
+                                            />
+                                        </Card>
+                                    </div>
+                                </div>
                             ));
                         }
                         return null; // Retourne null si aucune donnée valide
