@@ -1,13 +1,11 @@
 .zoom-on-hover {
   transition: all 0.3s ease;
-  /* Animation fluide */
-  /* Centrer le zoom */
   position: relative;
-  fill: #001d63;
+  fill: $primary;
 }
 
 .zoom-on-hover:hover {
-  fill: #efc92f;
+  fill: $secondary;
   position: relative;
 }
 
@@ -15,9 +13,21 @@
   position: relative;
   max-width: 80%;
 
+  h1 {
+    text-align: center;
+    color: $secondary;
+    font-size: 50px;
+    margin-top: 15px;
+  }
+
   svg {
     max-width: 100%;
     height: auto;
+
+    path {
+      stroke-width: 1;
+      stroke: $secondary;
+    }
   }
 
   &__tooltip {

@@ -4,7 +4,7 @@ import useOfficesStore from '../store/offices';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useBreadcrumb } from './BreadCrumb';
 
-const { Meta } = Card; // Importation de Meta depuis Card
+const { Meta } = Card;
 
 export default function Liste() {
     const { statesName } = useParams();
@@ -16,9 +16,10 @@ export default function Liste() {
 
 
     useEffect(() => {
-        setBreadcrumbItems([{ title: 'Map' }, { title: statesName }]);
+        setBreadcrumbItems([{ title: <span onClick={() => handleClick("/")}>Map</span > }, { title: statesName }]);
     }, [setBreadcrumbItems, statesName]);
 
+    const handleClick = (path) => navigate(path);
 
     const handleView = (uid) => navigate('/' + statesName + '/' + uid);
 
@@ -74,7 +75,7 @@ export default function Liste() {
                                 </div>
                             ));
                         }
-                        return null; // Retourne null si aucune donnée valide
+                        return null;
                     })}
             </Carousel>
             <br />

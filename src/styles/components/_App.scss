@@ -28,8 +28,21 @@
         color: $secondary;
     }
 
+
+
 }
 
 header {
     display: flex;
+    align-items: center;
+
+    .header-image {
+        height: 80%;
+        margin-right: 20px;
+    }
+}
+
+footer {
+    display: flex;
+    justify-content: center;
 }

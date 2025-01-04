@@ -110,8 +110,9 @@ export default function Map() {
 
     return (
         <>
-
             <div ref={mapRef} className="map">
+                <h1>WantedWeb Site</h1><br />
+                <h2>Student projet to find the criminals rechered frome the FBI</h2>
                 {showState && (
                     <div className="map__tooltip" ref={tooltipRef}>
                         {selectedState.state}

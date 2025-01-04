@@ -1,7 +1,23 @@
-.custom-carousel-item .custom-card {
-    justify-content: center;
-    display: flex;
-    margin-bottom: 50px;
+.custom-carousel-item {
+
+    .custom-card {
+        justify-content: center;
+        display: flex;
+        margin-bottom: 50px;
+
+        .ant-card {
+            max-height: 80%;
+
+            @include mob {
+                width: 80%;
+            }
+
+            @include tab {
+                width: 80%;
+            }
+        }
+    }
+
 }
 
 .action-button {

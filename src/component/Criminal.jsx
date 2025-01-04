@@ -1,8 +1,9 @@
 import { Descriptions } from 'antd';
 import useOfficesStore from '../store/offices';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 import { useBreadcrumb } from './BreadCrumb';
+import { useMediaQuery } from "react-responsive";
 
 export default function Criminal() {
 
@@ -10,11 +11,16 @@ export default function Criminal() {
     const { getCriminals } = useOfficesStore();
     const criminal = getCriminals(statesName, uid);
     const { setBreadcrumbItems } = useBreadcrumb();
-
+    const isMobile = useMediaQuery({ maxWidth: 768 }); // Définit un breakpoint pour les téléphones
+    const isTablet = useMediaQuery({ minWidth: 769, maxWidth: 1024 });
+    const columnCount = isMobile ? 8 : isTablet ? 16 : 24;
+    const navigate = useNavigate();
 
     useEffect(() => {
-        setBreadcrumbItems([{ title: 'Map' }, { title: statesName }, { title: uid }]);
+        setBreadcrumbItems([{ title: <span onClick={() => handleClick("/")}>Map</span> }, { title: <span onClick={() => handleClick("/" + statesName)}> {statesName}</span> }, { title: uid }]);
     }, [statesName, uid, setBreadcrumbItems]);
+
+    const handleClick = (path) => navigate(path);
 
     const info_criminal = [
         {
@@ -109,7 +115,7 @@ export default function Criminal() {
 
     return (
         <>
-            <Descriptions title="Criminal info" bordered items={info_criminal} column={24} />
+            <Descriptions title="Criminal info" bordered items={info_criminal} column={columnCount} />
             <Descriptions title="Description info" bordered items={info_discription} />
         </>
     )
