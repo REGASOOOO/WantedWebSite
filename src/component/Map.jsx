@@ -117,7 +117,7 @@ export default function Map() {
                     <div className="map__tooltip" ref={tooltipRef}>
                         {selectedState.state}
                         <div>
-                            Bureau du FBi: <br />
+                            Fbi office: <br />
                             {selectedState.offices.map((element, index) => (<div key={index}>- {element} <br /></div>))}
                         </div>
                     </div>
@@ -133,7 +133,7 @@ export default function Map() {
                     footer={[
                         <Button key="submit" type="primary"
                             onClick={() => handleOk(selectedState.state)}>
-                            Voir plus
+                            View more
                         </Button>,
                     ]}
                 >
@@ -141,12 +141,12 @@ export default function Map() {
                         <>
                             {onClickState.state} Wanted : {states[onClickState.state]?.total || 0} <br /><br />
 
-                            Bureau du FBI:
+                            Fbi offices:
                             <br />
                             {onClickState.offices.map((element, index) => (<div key={index}>{element} Wanted : {states[onClickState.state]?.[OfficeService.formatOfficeName(element)]?.total} <br /></div>))}
                         </>
                     ) : (
-                        "Chargement des données..."
+                        "Loading data..."
                     )}
                 </Modal>
                 <svg

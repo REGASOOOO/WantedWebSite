@@ -37,7 +37,7 @@ export default function Liste() {
 
     return (
         <>
-            <p>Les criminels recherchés dans l'état de : {statesName}</p>
+            <p>The criminals wanted in the state of {statesName}</p>
 
             <Carousel className="custom-carousel" arrows infinite={false}>
                 {state &&

@@ -12,12 +12,24 @@
 .map {
   position: relative;
   max-width: 80%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 
   h1 {
     text-align: center;
     color: $secondary;
     font-size: 50px;
     margin-top: 15px;
+  }
+
+  h2 {
+    text-align: center;
+    color: $secondary;
+    font-size: 40px;
+    max-width: 80%;
+    margin-top: 10px;
+    margin-bottom: 30px;
   }
 
   svg {

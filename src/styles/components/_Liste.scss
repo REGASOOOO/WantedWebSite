@@ -20,6 +20,13 @@
 
 }
 
+p {
+    text-align: center;
+    color: $secondary;
+    font-size: 50px;
+    margin-bottom: 20px;
+}
+
 .action-button {
     display: flex;
     justify-content: space-around;
